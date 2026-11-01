@@ -20,7 +20,9 @@ connection();
 const profileRouter = require('./routes/user/profile.router');
 const userRouter = require('./routes/user/user.router');
 const publicationRouter = require('./routes/user/publications/publications.router'); 
+const authRouter = require('./routes/user/auth/auth.router')
 
+app.use('/', authRouter); 
 app.use('/', userRouter);
 app.use('/', profileRouter);
 app.use('/', publicationRouter);

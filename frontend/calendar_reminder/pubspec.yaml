@@ -1,14 +1,21 @@
 name: calendar_reminder
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0+1
 
 environment:
   sdk: ^3.11.3
 
 dependencies:
+  animate_do: ^5.1.0
+  dio: ^5.11.1
   flutter:
     sdk: flutter
+  flutter_riverpod: ^3.3.2
+  flutter_secure_storage: ^11.2.0
+  go_router: ^17.5.0
+  hugeicons: ^1.2.0
+  uuid: ^4.6.0
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +24,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - "assets/images/loading_figures/"
+    - "assets/images/ellayyo/"
+
+  fonts:
+    - family: "mikorn"
+      fonts:
+        - asset: "assets/font/MIKORN.otf"

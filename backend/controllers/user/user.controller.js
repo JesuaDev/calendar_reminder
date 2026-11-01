@@ -12,7 +12,7 @@ exports.postUser = async (req, res) => {
 
         const newUser = await User.create({
             email: email,
-            password:hashedPassword
+            password:hashedPassword,
         }); 
 
         res.status(201).json({status:201, message:"Usuario creado correctamente", data: newUser}); 

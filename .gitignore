@@ -9,13 +9,13 @@ frontend/**/*.log
 frontend/**/*.pyc
 frontend/**/*.swp
 frontend/**/.DS_Store
-frontend/.atom/
-frontend/.build/
-frontend/.buildlog/
-frontend/.history
-frontend/.svn/
-frontend/.swiftpm/
-frontend/migrate_working_dir/
+frontend/**/.atom/
+frontend/**/.build/
+frontend/**/.buildlog/
+frontend/**/.history
+frontend/**/.svn/
+frontend/**/.swiftpm/
+frontend/**/migrate_working_dir/
  
 frontend/**/*.iml
 frontend/**/*.ipr
@@ -25,22 +25,22 @@ frontend/.idea/
   
 frontend/**/doc/api/
 frontend/**/ios/Flutter/.last_build_id
-frontend/.dart_tool/
-frontend/.flutter-plugins-dependencies
-frontend/.pub-cache/
-frontend/.pub/
-frontend/build/
-frontend/coverage/
+frontend/**/.dart_tool/
+frontend/**/.flutter-plugins-dependencies
+frontend/**/.pub-cache/
+frontend/**/.pub/
+frontend/**/build/
+frontend/**/coverage/
  
-frontend/app.*.symbols
+frontend/**/app.*.symbols
 
  
-frontend/app.*.map.json
+frontend/**/app.*.map.json
 
  
-frontend/android/app/debug
-frontend/android/app/profile
-frontend/android/app/release
+frontend/**/android/app/debug
+frontend/**/android/app/profile
+frontend/**/android/app/release
 
  
-frontend/.env
+frontend/**/.env
