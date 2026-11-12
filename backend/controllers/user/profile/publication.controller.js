@@ -30,7 +30,7 @@ exports.postPublication = async (req, res) => {
 
 
     } catch (error) {
-        return res.status(500).json({ status: 500, message: "Hubo un error" });
+        return res.status(500).json({ status: 500, message: "Hubo un error en el servidor." });
     }
 
 }

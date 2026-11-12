@@ -13,10 +13,8 @@ const reminderSchema = new mongoose.Schema(
 
         reminder: { type: String, required: true },
         description: { type: String, trim: true, maxlength: 350 },
-        dateInit: { type: Date, required: true },
-        dateEnd: { type: Date },
-        hourInit: { type: String, required: true },
-        hourEnd: { type: String, required: true },
+        dateHourInit: { type: Date, required: true },
+        dateHourEnd: { type: Date },
         tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }]
     }, {timestamps: true}
 );

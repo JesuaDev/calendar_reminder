@@ -16,7 +16,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
 
-    stream = Stream.periodic(const Duration(milliseconds: 1000), (count) {
+    stream = Stream.periodic(const Duration(milliseconds: 300), (count) {
       return count % ImagesLoading.imagesLoad.length;
     });
   }

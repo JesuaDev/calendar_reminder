@@ -13,16 +13,21 @@ exports.authUser = async (req, res) => {
 
         if (email.includes("@")) {
             user = await userModel.findOne({ email });
+            console.log("Email")
 
         } else {
             const profile = await profileModel.findOne({ nameKeyUser: email });
 
             if (profile) {
                 user = await userModel.findById(profile.user);
+                console.log("Profile")
             }
         }
 
-        if (!user || await !bcrypt.compare(password, user.password)) {
+        const comparePassword = await  bcrypt.compare(password, user.password ); 
+
+        if (!user || !comparePassword) {
+            console.log("Credenciales Invalidas"); 
             return res.status(401).json({ status: 401, message: "Credenciales Inválidas" });
         }
 
@@ -37,9 +42,6 @@ exports.authUser = async (req, res) => {
             replaceBy: tokens.refreshToken
         }); 
         
-        console.log(userWithProfile); 
-        console.log(tokens);
-
         return res.status(200).json({ status: 200, message: "Inicio sesión correctamente.", data: userWithProfile, tokens: tokens })
 
 

@@ -12,11 +12,9 @@ class AuthFormStateNotifier extends Notifier<AuthFormState> {
 
   void addInputUser(String userInput) {
     state = state.copyWith(userInput: userInput);
-    debugPrint(userInput);
   }
 
   void addInputPassword(String password) {
     state = state.copyWith(passwordInput: password);
-    debugPrint(password);
   }
 }

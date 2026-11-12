@@ -1,8 +1,10 @@
 
 const jwt = require('jsonwebtoken'); 
 
-exports.verifyLogin = (req, res, next) => {
+exports.verifyToken = (req, res, next) => {
     try {
+
+    
         const accessToken = req.headers["authorization"]; 
 
         if(!accessToken){
@@ -17,6 +19,6 @@ exports.verifyLogin = (req, res, next) => {
     
 
     } catch (err) {
-        return res.status(500).json({ status: 500, message: `Hubo un error ${err}` })
+        return res.status(500).json({ status: 500, message: `Token inválido o expirado.` })
     }
 }

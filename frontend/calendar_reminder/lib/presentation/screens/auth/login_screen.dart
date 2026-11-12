@@ -2,6 +2,7 @@ import 'package:calendar_reminder/infraestructure/dtos/user/login_dtos.dart';
 import 'package:calendar_reminder/presentation/provider/features/auth/data/notifier/forms/auth_form_notifier.dart';
 import 'package:calendar_reminder/presentation/provider/features/auth/data/notifier/response/auth_response_notifier.dart';
 import 'package:calendar_reminder/presentation/screens/screens.dart';
+import 'package:calendar_reminder/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,10 @@ class _ContentLoginState extends ConsumerState<ContentLogin> {
     controllerUser = TextEditingController();
     controllerPassword = TextEditingController();
     super.initState();
+
+    Future.microtask(() {
+      ref.read(authResponseNotifier.notifier).verifyToken();
+    });
   }
 
   @override
@@ -55,61 +60,64 @@ class _ContentLoginState extends ConsumerState<ContentLogin> {
     final String? inputTextUser = ref.watch(authFormNotifier).userInput;
     final String? inputTextPassword = ref.watch(authFormNotifier).passwordInput;
     final Uuid uuid = Uuid();
-
+    final authProvider = ref.watch(authResponseNotifier);
     ref.listen(authResponseNotifier, (previus, next) {
-      debugPrint(next.userAuth.toString());
-      if (next.userAuth != null) {
+      if (next.statusCode == 200) {
         context.pushNamed(HomeScreen.namePage);
       }
     });
 
-    return Stack(
-      children: [
-        SizedBox.expand(
-          child: Image.asset(
-            "assets/images/ellayyo/116989.webp",
-            fit: BoxFit.cover,
-          ),
-        ),
+    return authProvider.isLoading!
+        ? LoadingPage()
+        : Stack(
+            children: [
+              SizedBox.expand(
+                child: Image.asset(
+                  "assets/images/ellayyo/116989.webp",
+                  fit: BoxFit.cover,
+                ),
+              ),
 
-        if (!isSlide)
-          ContentPresentationLogin(
-            onSlide: () {
-              setState(() {
-                isSlide = true;
-              });
-            },
-          ),
+              if (!isSlide)
+                ContentPresentationLogin(
+                  onSlide: () {
+                    setState(() {
+                      isSlide = true;
+                    });
+                  },
+                ),
 
-        Align(
-          alignment: AlignmentGeometry.bottomCenter,
-          child: ContentFormLogin(
-            controllerUser: controllerUser,
-            controllerPassword: controllerPassword,
-            isSlide: isSlide,
-            onChangedEmail: ref.read(authFormNotifier.notifier).addInputUser,
-            onChangedPassword: ref
-                .read(authFormNotifier.notifier)
-                .addInputPassword,
-            onSubmit: () => {
-              debugPrint("Entro aqui"),
+              Align(
+                alignment: AlignmentGeometry.bottomCenter,
+                child: ContentFormLogin(
+                  controllerUser: controllerUser,
+                  controllerPassword: controllerPassword,
+                  isSlide: isSlide,
+                  onChangedEmail: ref
+                      .read(authFormNotifier.notifier)
+                      .addInputUser,
+                  onChangedPassword: ref
+                      .read(authFormNotifier.notifier)
+                      .addInputPassword,
+                  onSubmit: () => {
+                    if (!(inputTextUser != null) ||
+                        !(inputTextPassword != null))
+                      {},
 
-              if (!(inputTextUser != null) || !(inputTextPassword != null)) {},
-
-              ref
-                  .read(authResponseNotifier.notifier)
-                  .authResponse(
-                    LoginDtos(
-                      user: inputTextUser!,
-                      password: inputTextPassword!,
-                      uuid: uuid.v4(),
-                    ),
-                  ),
-            },
-          ),
-        ),
-      ],
-    );
+                    ref
+                        .read(authResponseNotifier.notifier)
+                        .authResponse(
+                          LoginDtos(
+                            user: inputTextUser!,
+                            password: inputTextPassword!,
+                            uuid: uuid.v4(),
+                          ),
+                        ),
+                  },
+                ),
+              ),
+            ],
+          );
   }
 }
 

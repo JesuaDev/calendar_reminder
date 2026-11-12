@@ -20,11 +20,8 @@ class AuthNotifier extends Notifier<AuthState> {
       state = state.copyWith(isLoading: true, error: null);
       final DateTime start = DateTime.now();
 
-      debugPrint("Este es antes del response.");
       final repository = ref.read(authRepositoryImplProvider);
       final response = await repository.loginUser(dtos);
-
-      debugPrint("este es el response ${response.data}");
 
       final elapsed = DateTime.now().difference(start);
 
@@ -38,8 +35,9 @@ class AuthNotifier extends Notifier<AuthState> {
         message: response.message,
         userAuth: response.data,
       );
-    } /* on ErrorEntity catch (e, st) {
-      debugPrint("ERROR EN LOGIN: $e");
+    } on ErrorEntity catch (e, st) {
+      debugPrint("ERROR: $e");
+      debugPrint("Error details $st"); 
       state = state.copyWith(
         error: ErrorEntity(
           statusCode: e.statusCode,
@@ -47,18 +45,41 @@ class AuthNotifier extends Notifier<AuthState> {
           details: e.details,
         ),
       );
-    } */ catch (e, st) {
+    }
+  }
+
+  Future<void> verifyToken() async {
+    try {
+      final minLoadingTime = const Duration(milliseconds: 800);
+
+      state = state.copyWith(isLoading: true, error: null);
+      final DateTime start = DateTime.now();
+
+      final repository = ref.read(authRepositoryImplProvider);
+      final response = await repository.getAuth();
+
+      final elapsed = DateTime.now().difference(start);
+
+      if (elapsed < minLoadingTime) {
+        await Future.delayed(minLoadingTime - elapsed);
+      }
+
       state = state.copyWith(
         isLoading: false,
+        statusCode: response.statusCode,
+        message: response.message,
+        userAuth: response.data,
+      );
+    } on ErrorEntity catch (e, st) {
+      debugPrint("ERROR: $e");
+      debugPrint("Error details $st");
+      state = state.copyWith(
         error: ErrorEntity(
-          statusCode: 500,
-          message: 'Error desconocido',
-          details: '',
+          statusCode: e.statusCode,
+          message: e.message,
+          details: e.details,
         ),
       );
-
-      debugPrint("ERROR EN LOGIN: $e");
-      debugPrint("$st");
     }
   }
 }

@@ -4,4 +4,5 @@ import 'package:calendar_reminder/infraestructure/dtos/user/login_dtos.dart';
 
 abstract class LoginRepository {
   Future<ResponseApi<UserWithProfileEntity>> loginUser(LoginDtos dtos);
+  Future<ResponseApi<UserWithProfileEntity>> getAuth(); 
 }

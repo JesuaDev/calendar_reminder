@@ -15,7 +15,6 @@ class TokensStorage {
       value: refreshToken,
     );
 
-    debugPrint(token);
   }
 
   Future<void> deleteTokens() => _secureStorage.deleteAll();

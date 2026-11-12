@@ -4,4 +4,5 @@ import 'package:calendar_reminder/infraestructure/models/user/user_with_profile_
 
 abstract class LoginDatasource {
   Future<ResponseApi<UserWhitProfileModelResponse>> loginUser(LoginDtos dtos);
+  Future<ResponseApi<UserWhitProfileModelResponse>> getAuth(); 
 }

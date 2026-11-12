@@ -13,15 +13,16 @@ class AppTheme {
   static const Color colorBrigSurface = Color(0xFF091413);
   static const Color colorBrigOnSurface = Color(0xFF0E1B1A);
 
-  static const Color colorLigSurface = Color(0xFFFFF2F2);
-  static const Color colorLigOnSurface = Color(0XFFFFF2F2);
+  static const Color colorLigSurface = Color(0xFFFEFAF3);
+  static const Color colorLigOnSurface = Color(0XFFFBEFEF);
 
   static const String principalFont = 'mikorn';
+  static const String secondaryFont = 'manrope';
   static const TextTheme textTheme = TextTheme(
     displayLarge: TextStyle(fontSize: 50, fontWeight: FontWeight.w800),
     titleLarge: TextStyle(fontSize: 25),
-    bodyLarge: TextStyle(fontSize: 18),
-    bodyMedium: TextStyle(fontSize: 14),
+    bodyLarge: TextStyle(fontSize: 18, fontFamily: secondaryFont),
+    bodyMedium: TextStyle(fontSize: 14, fontFamily: secondaryFont),
   );
 
   static final InputDecorationTheme inputDecoration = InputDecorationTheme(
@@ -43,6 +44,7 @@ class AppTheme {
 
   static ThemeData themeDark = ThemeData(
     fontFamily: principalFont,
+    
     textTheme: textTheme,
     inputDecorationTheme: inputDecoration,
     colorScheme: ColorScheme(
@@ -55,6 +57,8 @@ class AppTheme {
       onError: colorOnError,
       surface: colorBrigSurface,
       onSurface: colorLigSurface,
+
+      tertiary: Color.fromARGB(255, 162, 175, 221),
     ),
   );
 
@@ -72,6 +76,7 @@ class AppTheme {
       onError: colorOnError,
       surface: colorLigSurface,
       onSurface: colorBrigSurface,
+      tertiary: Color(0xFFF6E2E9),
     ),
   );
 }

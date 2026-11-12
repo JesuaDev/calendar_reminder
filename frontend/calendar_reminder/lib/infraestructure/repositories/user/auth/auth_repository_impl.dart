@@ -16,4 +16,10 @@ class AuthRepositoryImpl implements LoginRepository {
     final response = await datasource.loginUser(dtos);
     return response.map(UserWithProfileMapper.toUserWithProfileEntity);
   }
+
+  @override
+  Future<ResponseApi<UserWithProfileEntity>> getAuth() async {
+    final response = await datasource.getAuth();
+    return response.map(UserWithProfileMapper.toUserWithProfileEntity);
+  }
 }
