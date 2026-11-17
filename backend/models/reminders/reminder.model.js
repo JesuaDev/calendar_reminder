@@ -15,6 +15,8 @@ const reminderSchema = new mongoose.Schema(
         description: { type: String, trim: true, maxlength: 350 },
         dateHourInit: { type: Date, required: true },
         dateHourEnd: { type: Date },
+        isNotified: {type: Boolean, default: false},
+        dialy: {type: Boolean, default: false}, 
         tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }]
     }, {timestamps: true}
 );

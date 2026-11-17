@@ -7,6 +7,8 @@ class ReminderEntity {
   final String? description;
   final DateTime dateInit;
   final DateTime dateEnd;
+  final bool isNotified;
+  final bool daily;
   final List<TagEntity>? tags;
 
   ReminderEntity({
@@ -17,5 +19,7 @@ class ReminderEntity {
     required this.dateInit,
     required this.dateEnd,
     required this.tags,
+    required this.isNotified,
+    required this.daily,
   });
 }

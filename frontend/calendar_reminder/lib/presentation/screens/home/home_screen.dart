@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:calendar_reminder/domain/entities/entities.dart';
+import 'package:calendar_reminder/presentation/provider/features/reminders/data/notifier/response/reminder_notifier_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import 'package:calendar_reminder/core/extensions/extensions.dart';
@@ -16,11 +19,26 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class ContentPage extends StatelessWidget {
+class ContentPage extends ConsumerStatefulWidget {
   const ContentPage({super.key});
 
   @override
+  ConsumerState<ContentPage> createState() => _ContentPageState();
+}
+
+class _ContentPageState extends ConsumerState<ContentPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(reminderNotiferProvider.notifier).loadTodayReminders();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final todaysReminders = ref.watch(reminderNotiferProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,14 +56,26 @@ class ContentPage extends StatelessWidget {
         ),
 
         SizedBox(height: 20),
-        Expanded(child: ContentTaskToday()),
+        Expanded(
+          child: ContentTaskToday(
+            isLoading: todaysReminders.isLoading,
+            remindersToday: todaysReminders.todaysReminders,
+          ),
+        ),
       ],
     );
   }
 }
 
 class ContentTaskToday extends StatelessWidget {
-  const ContentTaskToday({super.key});
+  final bool? isLoading;
+  final List<ReminderEntity>? remindersToday;
+
+  const ContentTaskToday({
+    super.key,
+    required this.isLoading,
+    required this.remindersToday,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,61 +104,88 @@ class ContentTaskToday extends StatelessWidget {
             ),
           ),
 
-          Expanded(
-            child: ListView(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 225,
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 18),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF674188).withValues(alpha: .5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 300,
-                        child: Text(
-                          "You Have A Meeting",
-                          style: context.textTheme.displaySmall?.copyWith(
-                            color: Color(0xFF674188),
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextHourTask(hour: "8:55 pm", hint: "Inicio"),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 20,
-                            ),
+          isLoading!
+              ? LoadingPage()
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: remindersToday?.length,
+                    itemBuilder: (context, index) {
+                      final ReminderEntity reminder = remindersToday![index];
 
-                            decoration: BoxDecoration(
-                              color: Color(0xFF674188),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Text(
-                              "5 min.",
-                              style: context.textTheme.bodyLarge?.copyWith(
-                                color: context.themeColor.tertiary,
+                      final dateHourInit = TimeOfDay.fromDateTime(
+                        reminder.dateInit,
+                      );
+
+                      final dateHourEnd = TimeOfDay.fromDateTime(
+                        reminder.dateEnd,
+                      );
+
+                      final Duration leftTime = reminder.dateEnd.difference(
+                        reminder.dateInit,
+                      );
+
+                      return Container(
+                        width: double.infinity,
+                        height: 225,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 20,
+                          horizontal: 18,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF674188).withValues(alpha: .5),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 300,
+                              child: Text(
+                                reminder.reminder,
+                                style: context.textTheme.displaySmall?.copyWith(
+                                  color: Color(0xFF674188),
+                                ),
+                                textAlign: TextAlign.start,
                               ),
                             ),
-                          ),
-                          TextHourTask(hour: "9:00 pm", hint: "Fin"),
-                        ],
-                      ),
-                    ],
+                            Spacer(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextHourTask(
+                                  hour: dateHourInit.toString(),
+                                  hint: "Inicio",
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 20,
+                                  ),
+
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF674188),
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Text(
+                                    leftTime.toString(),
+                                    style: context.textTheme.bodyLarge
+                                        ?.copyWith(
+                                          color: context.themeColor.tertiary,
+                                        ),
+                                  ),
+                                ),
+                                TextHourTask(
+                                  hour: dateHourEnd.toString(),
+                                  hint: "Fin",
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );

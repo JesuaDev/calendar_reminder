@@ -7,6 +7,8 @@ class ReminderModelResponse {
   final String? description;
   final DateTime dateInit;
   final DateTime dateEnd;
+  final bool isNotified;
+  final bool daily;
   final List<TagsReminderModelResponse>? tags;
 
   ReminderModelResponse({
@@ -17,6 +19,8 @@ class ReminderModelResponse {
     required this.dateEnd,
     required this.tags,
     required this.id,
+    required this.isNotified,
+    required this.daily,
   });
 
   factory ReminderModelResponse.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +40,8 @@ class ReminderModelResponse {
                 (tag) => TagsReminderModelResponse.fromJson(json),
               )
             : 'not tags',
+        isNotified: json["isNotified"] ?? false,
+        daily: json["daily"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {

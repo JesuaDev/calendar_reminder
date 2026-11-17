@@ -22,12 +22,14 @@ const userRouter = require('./routes/user/user.router');
 const publicationRouter = require('./routes/user/publications/publications.router'); 
 const authRouter = require('./routes/user/auth/auth.router'); 
 const tokenRouter = require('./routes/user/auth/tokens/tokens.router');
+const tagsRouter = require('./routes/reminders/additionals/tags.router');
 
 app.use('/', authRouter); 
 app.use('/', userRouter);
 app.use('/', profileRouter);
 app.use('/', publicationRouter);
 app.use('/', tokenRouter); 
+app.use('/', tagsRouter); 
 
 
 

@@ -3,7 +3,7 @@ const Reminder = require('../../models/reminders/reminder.model');
 
 exports.postNewReminder = async (req, res) => {
     try {
-        const { idUser, reminder, description, dateInit, dateEnd, tags } = req.body;
+        const { idUser, reminder, description, dateInit, dateEnd, isNotified, dialy,  tags } = req.body;
 
         const newReminder = await Reminder.create({
             user: idUser,
@@ -11,7 +11,8 @@ exports.postNewReminder = async (req, res) => {
             description: description,
             dateHourInit: dateInit,
             dateHourEnd: dateEnd,
-
+            isNotified: isNotified, 
+            dialy: dialy, 
             tags: tags
         });
 

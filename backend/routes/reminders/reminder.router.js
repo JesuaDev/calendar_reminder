@@ -3,7 +3,8 @@ const { postNewReminder } = require('../../controllers/reminders/reminder.contro
 const router = express.Router(); 
 
 
-router.post('/reminder', postNewReminder)
+router.post('/reminder', postNewReminder); 
+
 
 
 
